@@ -1,0 +1,3 @@
+#!/bin/sh
+KEYS=`redis-cli keys 'not-ify:*'`
+[[ X${KEYS} != X ]] && redis-cli del ${KEYS}
