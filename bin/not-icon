@@ -13,12 +13,17 @@ class NotIcon:
         self.redis = redis.Redis()
         self.icon = gtk.StatusIcon()
         self.timer = gobject.timeout_add(1000, self._timeOut)
+        self.last_result = None
         self._timeOut()
     def _timeOut(self):
         if self.redis.keys('not-ify:*'):
-            self.icon.set_from_stock(gtk.STOCK_NO)
+            if self.last_result != True:
+                self.icon.set_from_stock(gtk.STOCK_NO)
+            self.last_result = True
         else:
-            self.icon.set_from_stock(gtk.STOCK_YES)
+            if self.last_result != False:
+                self.icon.set_from_stock(gtk.STOCK_YES)
+            self.last_result = False
         return True
 
 if __name__ == '__main__':
